@@ -14,8 +14,8 @@ pygame.mixer.init()
 #backgroud music
 pygame.mixer.music.load("music.mp3")
 mixer.music.set_volume(0.7) 
-#pygame.mixer.music.play(-1,0.0)
-pygame.mixer.music.play(0)
+pygame.mixer.music.play(-1,0.0)
+
 
 # GLOBALS VARS
 s_width = 800
