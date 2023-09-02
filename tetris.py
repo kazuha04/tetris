@@ -1,11 +1,11 @@
+#Author: Mystics Studio
 #import module
 import pygame
 import random
 from pygame.locals import *
 from pygame import mixer
 import os
-
-
+import time
 
 #init
 pygame.font.init()
@@ -14,8 +14,8 @@ pygame.mixer.init()
 #backgroud music
 pygame.mixer.music.load("music.mp3")
 mixer.music.set_volume(0.7) 
-pygame.mixer.music.play(-1,0.0)
-
+#pygame.mixer.music.play(-1,0.0)
+pygame.mixer.music.play(0)
 
 # GLOBALS VARS
 s_width = 800
@@ -212,6 +212,7 @@ def draw_text_middle_width(surface, text, size, color, height):
     label = font.render(text, 1, color)
 
     surface.blit(label, (top_left_x + play_width /2 - (label.get_width()/2), height))
+      
 
 def draw_grid(surface, grid):
     sx = top_left_x
@@ -308,7 +309,7 @@ def draw_window(surface, grid, score=0, last_score = 0):
     sx = top_left_x - 200
     sy = top_left_y + 200
 
-    surface.blit(label, (sx + 20, sy + 160))
+    surface.blit(label, (-1, sy + 160))
 
     for i in range(len(grid)):
         for j in range(len(grid[i])):
@@ -358,7 +359,6 @@ def main(win):  # *
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-                pygame.display.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 if 10 <= pos[0] <= 74 and 10 <= pos[1] <= 74:
@@ -416,7 +416,7 @@ def main_menu(win):  # *
     while run:
         win.fill((0,0,0))
         win.blit(title_image, (200, 0))
-        pygame.draw.rect(win, (250,0,0), (350, 300, 100, 50))
+        pygame.draw.rect(win, (250,0,0), (347, 323, 109, 60))
         draw_text_middle_width(win, 'Play', 60, (255,255,255), 300)
         pygame.display.update()
         for event in pygame.event.get():
@@ -424,10 +424,9 @@ def main_menu(win):  # *
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
-                if 350 <= pos[0] <= 450 and 300 <= pos[1] <= 350:
+                if 347 <= pos[0] <= 456  and 323 <= pos[1] <= 323+60:
                     main(win)
 
-    pygame.display.quit()
 
 win = pygame.display.set_mode((s_width, s_height))
 pygame.display.set_caption('Tetris')
