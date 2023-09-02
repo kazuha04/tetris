@@ -1,4 +1,4 @@
-#Author: Mystics Studio
+
 #import module
 import pygame
 import random
@@ -205,13 +205,13 @@ def draw_text_middle(surface, text, size, color):
     font = pygame.font.SysFont("comicsans", size, bold=True)
     label = font.render(text, 1, color)
 
-    surface.blit(label, (top_left_x + play_width /2 - (label.get_width()/2), top_left_y + play_height/2 - label.get_height()/2))
+    surface.blit(label, (s_height/2 - (label.get_width()/2), s_width/2 - label.get_height()/2))
 
 def draw_text_middle_width(surface, text, size, color, height):
     font = pygame.font.SysFont("comicsans", size, bold=True)
     label = font.render(text, 1, color)
 
-    surface.blit(label, (top_left_x + play_width /2 - (label.get_width()/2), height))
+    surface.blit(label, (s_width/2 - (label.get_width()/2), height))
       
 
 def draw_grid(surface, grid):
@@ -416,14 +416,16 @@ def main_menu(win):  # *
     while run:
         win.fill((0,0,0))
         win.blit(title_image, (200, 0))
-        pygame.draw.rect(win, (250,0,0), (347, 323, 109, 60))
+        pygame.draw.rect(win, (192,8,9), (357, 300, 443-357, 343-300))
         draw_text_middle_width(win, 'Play', 60, (255,255,255), 300)
+        
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
+                print(pos)
                 if 347 <= pos[0] <= 456  and 323 <= pos[1] <= 323+60:
                     main(win)
 
