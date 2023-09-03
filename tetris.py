@@ -15,7 +15,7 @@ pygame.mixer.init()
 pygame.mixer.music.load("music.mp3")
 mixer.music.set_volume(0.7) 
 #pygame.mixer.music.play(-1,0.0)
-pygame.mixer.music.play(0)
+pygame.mixer.music.play(-1, 0.0)
 
 # GLOBALS VARS
 s_width = 800
@@ -205,7 +205,7 @@ def draw_text_middle(surface, text, size, color):
     font = pygame.font.SysFont("comicsans", size, bold=True)
     label = font.render(text, 1, color)
 
-    surface.blit(label, (s_height/2 - (label.get_width()/2), s_width/2 - label.get_height()/2))
+    surface.blit(label, (s_width/2 - (label.get_width()/2), s_height/2 - label.get_height()/2))
 
 def draw_text_middle_width(surface, text, size, color, height):
     font = pygame.font.SysFont("comicsans", size, bold=True)
@@ -321,6 +321,24 @@ def draw_window(surface, grid, score=0, last_score = 0):
     draw_grid(surface, grid)
     #pygame.display.update()
 
+def lost(win, last_score, score):
+
+    while True:
+        win.fill((0,0,0))
+        draw_text_middle_width(win, "YOU LOST!", 80, (255,255,255), 200)
+        draw_text_middle_width(win, "Your High score: " + last_score, 25,(255,255,255) ,300)
+        draw_text_middle_width(win, "Your Score: "+score, 25,(255,255,255) ,350)
+        pygame.draw.rect(win, (192,8,9), (305, 450, 495-305, 470 - 452 ))
+        draw_text_middle_width(win, "Back to Main Menu", 30, (255,255,255), 450)
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                if 305 <= pos[0] <= 305 + (495 - 305) and 450 <= pos[1] <= 450 + (470 - 450):
+                    main_menu(win)
 
 def main(win):  # *
     last_score = max_score()
@@ -328,7 +346,6 @@ def main(win):  # *
     grid = create_grid(locked_positions)
 
     change_piece = False
-    run = True
     current_piece = get_shape()
     next_piece = get_shape()
     clock = pygame.time.Clock()
@@ -337,7 +354,7 @@ def main(win):  # *
     level_time = 0
     score = 0
 
-    while run:
+    while True:
 
         grid = create_grid(locked_positions)
         fall_time += clock.get_rawtime()
@@ -358,7 +375,7 @@ def main(win):  # *
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
+                exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 if 10 <= pos[0] <= 74 and 10 <= pos[1] <= 74:
@@ -404,16 +421,13 @@ def main(win):  # *
         pygame.display.update()
 
         if check_lost(locked_positions):
-            draw_text_middle(win, "YOU LOST!", 80, (255,255,255))
-            pygame.display.update()
             pygame.time.delay(1500)
-            run = False
             update_score(score)
+            lost(win, str(last_score), str(score))
 
 
 def main_menu(win):  # *
-    run = True
-    while run:
+    while True:
         win.fill((0,0,0))
         win.blit(title_image, (200, 0))
         pygame.draw.rect(win, (192,8,9), (357, 300, 443-357, 343-300))
@@ -422,11 +436,10 @@ def main_menu(win):  # *
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
+                exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
-                print(pos)
-                if 347 <= pos[0] <= 456  and 323 <= pos[1] <= 323+60:
+                if 357 <= pos[0] <= 357 + (443-357)  and 300 <= pos[1] <= 300 + (343-300):
                     main(win)
 
 
