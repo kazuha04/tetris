@@ -11,11 +11,6 @@ import time
 pygame.font.init()
 pygame.mixer.init()
 
-#backgroud music
-pygame.mixer.music.load("music.mp3")
-mixer.music.set_volume(0.7) 
-#pygame.mixer.music.play(-1,0.0)
-pygame.mixer.music.play(-1, 0.0)
 
 # GLOBALS VARS
 s_width = 800
@@ -30,6 +25,13 @@ top_left_y = s_height - play_height
 title_image = pygame.image.load('img/lg.pygame.conver.png')
 exit_button_image = pygame.image.load('img/button.png')
 
+play_button_image = pygame.image.load('img/button_play.png')
+play_button_image_width = play_button_image.get_width()
+play_button_image_height = play_button_image.get_height()
+
+back_to_menu_button_image = pygame.image.load('img/button_back-to-menu.png')
+back_to_menu_button_image_width = back_to_menu_button_image.get_width()
+back_to_menu_button_image_height = back_to_menu_button_image.get_height()
 # SHAPE FORMATS
 
 S = [['.....',
@@ -138,6 +140,8 @@ shapes = [S, Z, I, O, J, L, T]
 shape_colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
 # index 0 - 6 represent shape
 
+win = pygame.display.set_mode((s_width, s_height))
+pygame.display.set_caption('Tetris')
 
 class Piece(object):  # *
     def __init__(self, x, y, shape):
@@ -213,6 +217,8 @@ def draw_text_middle_width(surface, text, size, color, height):
 
     surface.blit(label, (s_width/2 - (label.get_width()/2), height))
       
+def create_text(size):
+    return pygame.font.SysFont("comicsans", size, bold=True)
 
 def draw_grid(surface, grid):
     sx = top_left_x
@@ -328,8 +334,7 @@ def lost(win, last_score, score):
         draw_text_middle_width(win, "YOU LOST!", 80, (255,255,255), 200)
         draw_text_middle_width(win, "Your High score: " + last_score, 25,(255,255,255) ,300)
         draw_text_middle_width(win, "Your Score: "+score, 25,(255,255,255) ,350)
-        pygame.draw.rect(win, (192,8,9), (305, 450, 495-305, 470 - 452 ))
-        draw_text_middle_width(win, "Back to Main Menu", 30, (255,255,255), 450)
+        win.blit(back_to_menu_button_image, (s_width/2 - back_to_menu_button_image_width/2, 450 ))
         pygame.display.update()
 
         for event in pygame.event.get():
@@ -337,7 +342,9 @@ def lost(win, last_score, score):
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
-                if 305 <= pos[0] <= 305 + (495 - 305) and 450 <= pos[1] <= 450 + (470 - 450):
+                if (s_width/2 - back_to_menu_button_image_width/2) <= pos[0] <= ((s_width/2 - back_to_menu_button_image_width/2)) + back_to_menu_button_image_width and 450 <= pos[1] <= 450 + back_to_menu_button_image_height:
+                    button_sound=pygame.mixer.Sound("sound/button.mp3")
+                    pygame.mixer.Sound.play(button_sound)
                     main_menu(win)
 
 def main(win):  # *
@@ -353,7 +360,6 @@ def main(win):  # *
     fall_speed = 0.27
     level_time = 0
     score = 0
-
     while True:
 
         grid = create_grid(locked_positions)
@@ -427,22 +433,23 @@ def main(win):  # *
 
 
 def main_menu(win):  # *
+    pygame.mixer.music.load("sound/music.mp3")
+    mixer.music.set_volume(0.5) 
+    pygame.mixer.music.play(-1, 0.0)
     while True:
         win.fill((0,0,0))
         win.blit(title_image, (200, 0))
-        pygame.draw.rect(win, (192,8,9), (357, 300, 443-357, 343-300))
-        draw_text_middle_width(win, 'Play', 60, (255,255,255), 300)
-        
+        win.blit(play_button_image, (s_width/2 - play_button_image_width/2, s_height/2 - play_button_image_height/2))
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
-                if 357 <= pos[0] <= 357 + (443-357)  and 300 <= pos[1] <= 300 + (343-300):
+                if (s_width/2 - play_button_image_width/2) <= pos[0] <= (s_width/2 - play_button_image_width/2) + play_button_image_width  and (s_height/2 - play_button_image_height/2) <= pos[1] <= (s_height/2 - play_button_image_height/2) + play_button_image_height:
+                    button_sound=pygame.mixer.Sound("sound/button.mp3")
+                    pygame.mixer.Sound.play(button_sound)
+                    pygame.mixer.music.stop()
                     main(win)
 
-
-win = pygame.display.set_mode((s_width, s_height))
-pygame.display.set_caption('Tetris')
 main_menu(win)
