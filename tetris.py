@@ -1,3 +1,5 @@
+# Author: Alice Tsukino
+# Owner: Mystics Studio
 
 #import module
 import pygame
