@@ -1,4 +1,5 @@
-# Author: Alice Tsukino
+# Game Core: Alice Tsukino
+# UI Improve By Kelvin
 # Owner: Mystics Studio
 
 #import module
