@@ -1,8 +1,3 @@
-# Game Core: Alice Tsukino
-# UI Improve by Kelvin
-# Owner: Mystics Studio
-
-#import module
 import pygame
 import random
 from pygame.locals import *
